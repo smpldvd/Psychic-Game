@@ -5,43 +5,48 @@ var letterChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
 var wins = 0;
 var losses = 0;
 var guessesLeft = 9;
-var lettersPicked = [];
-var winningLetter = computerChoice;
 
-// Pick a letter from the alphabet
-var compLetter = letterChoices[Math.floor(Math.random() * letterChoices.length)];
-winningLetter.push(compLetter);
-console.log(winningLetter);
+gamestart();
 
 // Letters pick subtracts guesses
-document.onkeyup = function (event) {
-    var userKeyed = (event.key).toLowerCase();
+function gamestart() {
 
-    if ((userKeyed === compLetter) && (guessesLeft > 0)) {
-        alert("You Win!");
-        wins++;
-        guessesLeft = 9;
-        var newCompLetter = letterChoices[Math.floor(Math.random) * letterChoices.length];
-        compLetter = newCompLetter;
-    }
-    else {
-        guessesLeft--;
-        document.getElementById("letters").innerHTML = "Your Guesses so far: " + userKeyed;
-        if (guessesLeft > 0) {
-            lettersPicked.push(userKeyed);
-            document.getElementById("letters").innerHTML = "Your Guesses so far: " + list.toString() + " ";
+    var lettersPicked = [];
+
+    // Pick a letter from the alphabet
+    var compLetter = letterChoices[Math.floor(Math.random() * letterChoices.length)];
+    console.log(compLetter);
+    document.onkeyup = function (event) {
+        var userKeyed = (event.key).toLowerCase();
+        if(letterChoices.includes(userKeyed)){
+
+        if ((userKeyed === compLetter) && (guessesLeft > 0)) {
+            //alert("You Win!");
+            wins++;
+            guessesLeft = 9;
+            var newCompLetter = letterChoices[Math.floor(Math.random) * letterChoices.length];
+            compLetter = newCompLetter;
+            gamestart();
         }
-    }
-    if (guessesLeft === 0) {
-        alert("You lose! The correct letter was " + compLetter);
-        losses++;
-        guessesLeft = 9;
-        var newCompLetter = letterChoices[Math.floor(Math.random) * letterChoices.length];
-        compLetter = newCompLetter;
-    }
+        else {
+            guessesLeft--;
+            document.getElementById("letters").innerHTML = userKeyed;
+            if (guessesLeft > 0) {
+                lettersPicked.push(userKeyed);
+                document.getElementById("letters").innerHTML = lettersPicked.toString() + " ";
+            }
+        }
+        if (guessesLeft === 0) {
+            //alert("You lose! The correct letter was " + compLetter);
+            losses++;
+            guessesLeft = 9;
+            var newCompLetter = letterChoices[Math.floor(Math.random) * letterChoices.length];
+            compLetter = newCompLetter;
+        }
 
-    document.getElementById("wins").innerHTML = "Wins : " + wins;
-    document.getElementById("losses").innerHTML = "Losses: " + losses;
-    document.getElementById("guessesLeft").innerHTML = "Guesses left : " + guessesLeft;
+        document.getElementById("wins").innerHTML = wins;
+        document.getElementById("losses").innerHTML = losses;
+        document.getElementById("guessesLeft").innerHTML = guessesLeft;
 
+    }}
 }
